@@ -1,0 +1,19 @@
+{
+  "name": "jmucak/wp-helpers-pack",
+  "description": "Bundle pack for wp theme",
+  "require": {
+    "php": ">=8.0"
+  },
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Josip Mucak"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "jmucak\\wpHelpersPack\\": "src"
+    }
+  }
+}

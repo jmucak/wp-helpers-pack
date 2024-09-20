@@ -3,12 +3,9 @@
 namespace jmucak\wpHelpersPack\helpers;
 
 class TemplateLoaderHelper {
-	private static ?TemplateLoaderHelper $instance = null;
-	private string $template_path = '';
-
-	private function __construct() {
-	}
-
+	protected static ?TemplateLoaderHelper $instance = null;
+	private function __construct(){}
+	final protected function __clone(){}
 	public static function get_instance(): ?TemplateLoaderHelper {
 		if ( null === self::$instance ) {
 			self::$instance = new TemplateLoaderHelper();
@@ -43,6 +40,24 @@ class TemplateLoaderHelper {
 	// @codingStandardsIgnoreEnd
 
 	/**
+	 * First check if file path exists and return file path
+	 *
+	 * @param string $file_path
+	 * @return string
+	 */
+	private function get_file_path( string $file_path ): string {
+		if ( file_exists( $file_path ) ) {
+			return $file_path;
+		}
+
+		if ( file_exists( '_' . $file_path ) ) {
+			return '_' . $file_path;
+		}
+
+		return '';
+	}
+
+	/**
 	 *
 	 * Get partial template
 	 *
@@ -52,9 +67,11 @@ class TemplateLoaderHelper {
 	 * @param string $folder
 	 * @return bool|string|void
 	 */
-	public function get_partial( string $path, array $data = array(), bool $html = false, string $folder = 'partials/' ) {
-		if ( ! file_exists( $path ) ) {
-			return false;
+	public function get_partial( string $path, array $data = array(), bool $html = false ) {
+		$file_path = $this->get_file_path( $path );
+
+		if ( empty( $file_path ) ) {
+			return '';
 		}
 
 		if ( $html ) {

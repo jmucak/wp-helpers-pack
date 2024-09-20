@@ -2,12 +2,12 @@
 
 namespace jmucak\wpHelpersPack\providers;
 
-use jmucak\wpHelpersPack\interfaces\BlockProviderInterface;
+use jmucak\wpHelpersPack\interfaces\BlockServiceInterface;
 
 class BlockProvider {
-	private BlockProviderInterface $block_provider;
+	private BlockServiceInterface $block_provider;
 
-	public function register( BlockProviderInterface $block_provider ): void {
+	public function register( BlockServiceInterface $block_provider ): void {
 		$this->block_provider = $block_provider;
 
 		if ( function_exists( 'acf_register_block_type' ) ) {

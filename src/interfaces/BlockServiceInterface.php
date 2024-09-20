@@ -2,7 +2,7 @@
 
 namespace jmucak\wpHelpersPack\interfaces;
 
-interface BlockProviderInterface {
+interface BlockServiceInterface {
 	public function get_blocks() : array;
 	public function get_default_blocks() : array;
 	public function get_categories() : array;

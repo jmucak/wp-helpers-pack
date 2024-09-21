@@ -3,7 +3,7 @@
 namespace jmucak\wpHelpersPack\helpers;
 
 class FileHelper {
-	public static function convert_file_size_to_readable_size(int $size) : string {
+	public static function convert_file_size_to_readable_size( int $size ): string {
 		$base   = log( $size ) / log( 1024 );
 		$suffix = array( '', 'KB', 'MB', 'GB', 'TB' );
 		$f_base = floor( $base );

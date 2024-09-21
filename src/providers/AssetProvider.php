@@ -2,57 +2,66 @@
 
 namespace jmucak\wpHelpersPack\providers;
 
-use jmucak\wpHelpersPack\interfaces\AssetServiceInterface;
-
 class AssetProvider {
-	private AssetServiceInterface $asset_service;
+	private array $config;
 
-	public function __construct(AssetServiceInterface $asset_service) {
-		$this->asset_service = $asset_service;
+	public function __construct( array $config ) {
+		$this->config = $config;
 	}
 
-	public function register(  ): void {
+	public function register(): void {
+		if ( empty( $this->config['base_path'] ) || empty( $this->config['base_url'] ) ) {
+			return;
+		}
+
 		$this->enqueue_scripts();
 		$this->enqueue_styles();
 	}
 
+	private function get_base_path( string $path ): string {
+		return $this->config['base_path'] . $path;
+	}
+
+	private function get_base_url( string $path ): string {
+		return $this->config['base_url'] . $path;
+	}
+
 	private function enqueue_scripts(): void {
-		foreach ( $this->asset_service->get_js_settings() as $handle => $data ) {
-			if ( empty( $data['path'] ) ) {
-				continue;
-			}
-			$path = $data['path'];
-			if ( ! file_exists( $this->asset_service->get_base_path() . $path ) ) {
-				continue;
-			}
+		if ( ! empty( $this->config['js'] ) ) {
+			foreach ( $this->config['js'] as $handle => $data ) {
+				if ( empty( $data['path'] ) ) {
+					continue;
+				}
+				if ( ! file_exists( $this->get_base_path( $data['path'] ) ) ) {
+					continue;
+				}
 
-			$version        = $data['version'] ?? 1.0;
-			$timestamp_bust = ! empty( $data['timestamp_bust'] );
-			$in_footer      = $data['in_footer'] ?? true;
+				$version        = $data['version'] ?? 1.0;
+				$timestamp_bust = ! empty( $data['timestamp_bust'] );
+				$in_footer      = $data['in_footer'] ?? true;
 
-			if ( $timestamp_bust ) {
-				$version .= sprintf( '.%d', filemtime( $this->asset_service->get_base_path() . $path ) );
-			}
+				if ( $timestamp_bust ) {
+					$version .= sprintf( '.%d', filemtime( $this->get_base_path( $data['path'] ) ) );
+				}
 
-			wp_enqueue_script( $handle, $this->asset_service->get_base_url() . $path, [], $version, $in_footer );
+				wp_enqueue_script( $handle, $this->get_base_url( $data['path'] ), [], $version, $in_footer );
 
-			if ( ! empty( $data['localize'] ) && ! empty( $data['localize']['data'] ) ) {
-				wp_localize_script( $handle, $data['localize']['object'], $data['localize']['data'] );
+				if ( ! empty( $data['localize'] ) && ! empty( $data['localize']['data'] ) ) {
+					wp_localize_script( $handle, $data['localize']['object'], $data['localize']['data'] );
+				}
 			}
 		}
 	}
 
 	private function enqueue_styles(): void {
-		foreach ( $this->asset_service->get_css_settings() as $handle => $data ) {
-			if ( empty( $data['path'] ) ) {
-				continue;
+		if ( ! empty( $this->config['css'] ) ) {
+			foreach ( $this->config['css'] as $handle => $data ) {
+				if ( empty( $data['path'] ) ) {
+					continue;
+				}
+
+				wp_enqueue_style( $handle, $this->get_base_url( $data['path'] ), [], $data['version'] ?? 1.0, $data['in_footer'] ?? true );
 			}
-
-			$path      = $data['path'];
-			$version   = $data['version'] ?? 1.0;
-			$in_footer = $data['in_footer'] ?? true;
-
-			wp_enqueue_style( $handle, $this->asset_service->get_base_url() . $path, [], $version, $in_footer );
 		}
 	}
 }

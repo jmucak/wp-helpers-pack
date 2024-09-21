@@ -2,12 +2,12 @@
 
 namespace jmucak\wpHelpersPack\providers;
 
-use jmucak\wpHelpersPack\services\AbstractCPTSettingsService;
+use jmucak\wpHelpersPack\interfaces\CPTSettingsServiceInterface;
 
 class CPTProvider {
-	private AbstractCPTSettingsService $cpt_settings_service;
+	private CPTSettingsServiceInterface $cpt_settings_service;
 
-	public function register( AbstractCPTSettingsService $cpt_settings_service ): void {
+	public function register( CPTSettingsServiceInterface $cpt_settings_service ): void {
 		$this->cpt_settings_service = $cpt_settings_service;
 
 		$this->register_post_types();

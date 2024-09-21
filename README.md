@@ -105,7 +105,7 @@ $config = array(
     ),	
 );
 
-(new BlockSubscriber($block_config));
+(new BlockSettingsEvent($block_config));
 ```
 
 #### Registering post types and taxonomies

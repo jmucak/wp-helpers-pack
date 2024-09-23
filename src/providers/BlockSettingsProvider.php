@@ -1,13 +1,16 @@
 <?php
 
-namespace jmucak\wpHelpersPack\hooks;
+namespace jmucak\wpHelpersPack\providers;
 
-class BlockSettingsEvent {
+class BlockSettingsProvider {
 	private array $config;
-	public function __construct(array $config) {
+
+	public function __construct( array $config ) {
 		$this->config = $config;
 
-		add_filter( 'allowed_block_types_all', array( $this, 'filter_allowed_blocks' ) );
+		if ( ! empty( $this->config['default_blocks'] ) ) {
+			add_filter( 'allowed_block_types_all', array( $this, 'filter_allowed_blocks' ) );
+		}
 
 		if ( ! empty( $this->config['categories'] ) ) {
 			add_filter( 'block_categories_all', array( $this, 'filter_block_categories' ) );

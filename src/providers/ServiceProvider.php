@@ -35,4 +35,10 @@ class ServiceProvider {
 			}
 		}
 	}
+
+	public static function register_rest_routes( array $config ): void {
+		foreach ( $config as $rest_config ) {
+			register_rest_route( $rest_config['namespace'], $rest_config['route'], $rest_config['args'] );
+		}
+	}
 }

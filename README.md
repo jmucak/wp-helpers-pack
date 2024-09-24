@@ -50,24 +50,68 @@ function get_partial( string $path, array $data = array(), bool $html = false ):
 
 ```
 $config = array(
-    'js'        => array(
-        'jsHandle' => array(
-            'path'           => '{PATH_TO_BUNDLE_JS}',
-            'version'        => '1.0.0',
-            'localize'       => array(
-                'object' => '{OBJECT_NAME}',
-                'data'   => array(),
+    'assets' => array(
+        'wp_enqueue_scripts' => array(
+            'js'        => array(
+                'jsHandle' => array(
+                    'path'           => '{PATH_TO_BUNDLE_JS}',
+                    'version'        => '1.0.0',
+                    'localize'       => array(
+                        'object' => '{OBJECT_NAME}',
+                        'data'   => array(),
+                    ),
+                    'timestamp_bust' => true, // dynamic version change
+                )
             ),
-            'timestamp_bust' => true, // dynamic version change
+            'css'       => array(
+                'cssHandle' => array(
+                    'path'           => '{PATH_TO_BUNDLE_CSS}',
+                    'in_footer'      => false,
+                    'version'        => '1.0.0',
+                    'timestamp_bust' => true, // dynamic version change
+                ),
+            ),
+            'admin_enqueue_scripts' => array(
+                'js'        => array(
+                    'jsHandle' => array(
+                        'path'           => '{PATH_TO_BUNDLE_JS}',
+                        'version'        => '1.0.0',
+                        'localize'       => array(
+                            'object' => '{OBJECT_NAME}',
+                            'data'   => array(),
+                        ),
+                        'timestamp_bust' => true, // dynamic version change
+                    )
+                ),
+                'css'       => array(
+                    'cssHandle' => array(
+                        'path'           => '{PATH_TO_BUNDLE_CSS}',
+                        'in_footer'      => false,
+                        'version'        => '1.0.0',
+                        'timestamp_bust' => true, // dynamic version change
+                    ),
+                ),
+            'enqueue_block_editor_assets' => array(
+                'js'        => array(
+                    'jsHandle' => array(
+                        'path'           => '{PATH_TO_BUNDLE_JS}',
+                        'version'        => '1.0.0',
+                        'localize'       => array(
+                            'object' => '{OBJECT_NAME}',
+                            'data'   => array(),
+                        ),
+                        'timestamp_bust' => true, // dynamic version change
+                    )
+                ),
+                'css'       => array(
+                    'cssHandle' => array(
+                        'path'           => '{PATH_TO_BUNDLE_CSS}',
+                        'in_footer'      => false,
+                        'version'        => '1.0.0',
+                        'timestamp_bust' => true, // dynamic version change
+                    ),
+                ),
         )
-    ),
-    'css'       => array(
-        'cssHandle' => array(
-            'path'           => '{PATH_TO_BUNDLE_CSS}',
-            'in_footer'      => false,
-            'version'        => '1.0.0',
-            'timestamp_bust' => true, // dynamic version change
-        ),
     ),
     'base_url'  => get_template_directory_uri() . '/{ASSETS_FOLDER}/',
     'base_path' => get_theme_file_path( '/{ASSETS_FOLDER}/' ),
@@ -76,21 +120,13 @@ $config = array(
 add_action( 'wp_enqueue_scripts', array( new AssetProvider( $config ), 'register' ) );
 ```
 
-#### Registering block data
-
-```
-$service_provider = new ServiceProvider();
-$service_provider->register_blocks(
-    array(
-		array(), // Block settings
-    )
-);
-```
-
-#### Adding blocks events
+#### Registering blocks
 
 ```
 $config = array(
+    'blocks' => array(
+		array(), // Block settings
+    )
     'default_blocks' => array(
         'core/paragraph',
         'core/heading',
@@ -105,7 +141,7 @@ $config = array(
     ),	
 );
 
-(new BlockSettingsEvent($block_config));
+ServiceProvider::register_blocks( $config );
 ```
 
 #### Registering post types and taxonomies

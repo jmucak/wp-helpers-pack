@@ -155,3 +155,21 @@ $service_provider->register_taxonomies( array(
         'genre' => array() // Taxonomies settings
     ) );
 ```
+
+#### Registering rest routes
+```
+add_action( 'rest_api_init', array( $this, 'register_rest_route' ) );
+
+public function register_rest_route(): void {
+
+    $config_data = array(
+        array(
+            'namespace' => {NAMESPACE},
+            'route' => {ROUTE},
+            'args' => array()
+        ),
+    );
+    
+    ServiceProvider::register_rest_routes( $config_data );
+}
+```

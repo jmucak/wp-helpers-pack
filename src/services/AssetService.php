@@ -1,8 +1,8 @@
 <?php
 
-namespace jmucak\wpHelpersPack\providers;
+namespace jmucak\wpHelpersPack\services;
 
-class AssetProvider {
+class AssetService {
 	private string $base_path;
 	private string $base_url;
 	private array $assets;

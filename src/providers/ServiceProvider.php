@@ -22,7 +22,7 @@ class ServiceProvider {
 		}
 
 		if ( ! empty( $config['blocks'] ) ) {
-			add_action( 'init', array( $this, 'register_blocks' ) );
+			add_action( 'acf/init', array( $this, 'register_blocks' ) );
 		}
 
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );

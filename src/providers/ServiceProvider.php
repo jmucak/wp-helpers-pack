@@ -30,6 +30,10 @@ class ServiceProvider {
 		if ( ! empty( $config['query_vars'] ) ) {
 			add_filter( 'query_vars', array( $this, 'register_query_vars' ) );
 		}
+
+		if ( ! empty( $config['menus'] ) ) {
+			register_nav_menus( $config['menus'] );
+		}
 	}
 
 	private function register_assets( array $config ): void {

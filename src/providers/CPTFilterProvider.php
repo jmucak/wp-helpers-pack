@@ -8,6 +8,17 @@ use WP_REST_Server;
 
 class CPTFilterProvider {
 	public const ROUTE_CPT = 'cpt';
+	public string $namespace = '';
+
+	public function register(string $namespace): void {
+		$this->namespace = $namespace;
+		add_action( 'rest_api_init', array( $this, 'register_rest_route' ) );
+	}
+
+	public function register_rest_route(): void {
+		register_rest_route( $this->namespace, self::ROUTE_CPT, $this->get_route_args() );
+	}
+
 	public function get_route_args(): array {
 		return array(
 			array(

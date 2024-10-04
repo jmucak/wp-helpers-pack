@@ -1,6 +1,6 @@
 <?php
 
-namespace jmucak\wpHelpersPack\helpers;
+namespace jmucak\wpHelpersPack;
 
 class FileHelper {
 	public static function convert_file_size_to_readable_size( int $size ): string {

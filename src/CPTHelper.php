@@ -1,6 +1,6 @@
 <?php
 
-namespace jmucak\wpHelpersPack\helpers;
+namespace jmucak\wpHelpersPack;
 
 class CPTHelper {
 	/**
